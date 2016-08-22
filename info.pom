@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <name>Android Map Event Manager</name>
+  <description>Library for managing touch events on interactive views such as maps</description>
+  <url>https://github.com/topobyte/android-map-event-manager</url>
+</project>
