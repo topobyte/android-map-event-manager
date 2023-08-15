@@ -115,6 +115,11 @@ public class EventManager<T extends View & EventManagerManaged>
 					public boolean onScale(ScaleGestureDetector detector)
 					{
 						float factor = detector.getScaleFactor();
+						if (factor < 0) {
+							// Negative factors will lead to NaN zoom distances!
+							// So bail out.
+							return true;
+						}
 						float focusX = detector.getFocusX();
 						float focusY = detector.getFocusY();
 
@@ -278,7 +283,6 @@ public class EventManager<T extends View & EventManagerManaged>
 			break;
 		}
 	}
-
 
 	/*
 	 * methods for specific touch event actions
