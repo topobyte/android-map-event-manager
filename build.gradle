@@ -1,10 +1,10 @@
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.3'
+wrapper {
+    gradleVersion = '7.6.1'
 }
 
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'eclipse'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 if (project.hasProperty("topobyte")) {
     apply from: 'file:///' + System.getProperty("user.home") \
@@ -19,14 +19,24 @@ repositories {
 }
 
 dependencies {
-    compile 'com.google.android:android:4.1.1.4'
+    api 'com.google.android:android:4.1.1.4'
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+java {
+    withSourcesJar()
 }
 
-artifacts {
-    archives sourcesJar
+def pomInfo = new XmlSlurper().parse(file('info.pom'));
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            pom {
+                name = "$pomInfo.name"
+                description = "$pomInfo.description"
+                url = "$pomInfo.url"
+            }
+        }
+    }
 }
